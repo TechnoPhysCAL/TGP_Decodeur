@@ -1,5 +1,5 @@
 /****************************************************************
-// Librairie DecodeurTGP
+// Librairie Decodeur
 //Auteurs : Claude Bouchard
 //Date : septembre 2010
 //version : 1.0
@@ -7,7 +7,7 @@
 //arguments dans un format simplifié
 //***************************************************************/
 #include "Stream.h"
-#include "DecodeurTGP.h"
+#include "Decodeur.h"
 
 /***************************************************************
 // Déclaration des variables et constantes privées
@@ -28,7 +28,7 @@ Stream* _MyStream;		//Pointeur pour permettre de sélectionner le type de commun
 /***************************************************************
 // Constructeur
 //***************************************************************/
-DecodeurTGP::DecodeurTGP(Stream* stream){
+Decodeur::Decodeur(Stream* stream){
 	_IncomingByte=0;
 	_MyStream = stream;
 	_InComIndex=0;
@@ -36,7 +36,7 @@ DecodeurTGP::DecodeurTGP(Stream* stream){
 	_separateur=' ';
 	_base = ENTIER;
 }
-DecodeurTGP::DecodeurTGP(Stream* stream,char separateur, int base){
+Decodeur::Decodeur(Stream* stream,char separateur, int base){
 	_IncomingByte=0;
 	_MyStream = stream;
 	_InComIndex=0;
@@ -61,7 +61,7 @@ uniquement le port série Serial0. Donc, il n'y a pas de paramètre selection.
 /****************************************************************
 Fonction pour indiquer si une commande à été reçue.
 ****************************************************************/
-bool DecodeurTGP::isAvailable(){
+bool Decodeur::isAvailable(){
 	if(lireBuffer()){
 		decoderCommande();
 		return true;
@@ -74,21 +74,21 @@ bool DecodeurTGP::isAvailable(){
 /****************************************************************
 Fonction pour indiquer le nombre d'arguments reçues.
 ****************************************************************/
-int DecodeurTGP::getArgCount(){
+int Decodeur::getArgCount(){
 	return _NbArg;
 }
 
 /****************************************************************
 Fonction pour retourner la commande reçue.
 ****************************************************************/
-char DecodeurTGP::getCommand(){
+char Decodeur::getCommand(){
 	return _Commande;
 }
 
 /****************************************************************
 Fonction pour retourner l'argument sélectionnée
 ****************************************************************/
-float DecodeurTGP::getArg(int noArg){
+float Decodeur::getArg(int noArg){
 if ((noArg<0) || (noArg)>_maxArg){
 	return 0;
 	}
@@ -105,7 +105,7 @@ else{
 //Routine pour décoder les tokens de la commande
 //********************************************************/
 
-bool DecodeurTGP::lireBuffer(){
+bool Decodeur::lireBuffer(){
  _IncomingByte = -1;
   while ((_MyStream->available()>0) && (_IncomingByte != '\n')) {
 
@@ -127,7 +127,7 @@ bool DecodeurTGP::lireBuffer(){
 	}
 }
 
-bool DecodeurTGP::decoderCommande()
+bool Decodeur::decoderCommande()
 {
 	SplitToken(_InComBuffer, &_Commande, _Arguments, _base);	//on appelle la fonction pour splitter les tokens (entier)
 
@@ -141,7 +141,7 @@ bool DecodeurTGP::decoderCommande()
 /*********************************************************
 // Fonction pour séparer les tokens
 //********************************************************/
-void DecodeurTGP::SplitToken(char Buf[], char *Comm, float Arg[], int base)
+void Decodeur::SplitToken(char Buf[], char *Comm, float Arg[], int base)
 {
 	_NbArg = 0;
     char *p;    								// Pointeur pour la valeur de retour de la fonction "strtok"
@@ -180,7 +180,7 @@ void DecodeurTGP::SplitToken(char Buf[], char *Comm, float Arg[], int base)
 // Fonction pour convertir l'argument textuel en type float
 //********************************************************/
 
-float DecodeurTGP::convertirArg(char *p, int base){
+float Decodeur::convertirArg(char *p, int base){
 	switch(base){
 	case ENTIER:
 		return atoi(p);
@@ -201,7 +201,7 @@ float DecodeurTGP::convertirArg(char *p, int base){
 // exprimée en valeur hexadécimale en sa valeur décimale
 // correspondante.
 //********************************************************/
-int DecodeurTGP::HexaToDecimal(const char* Hexa)
+int Decodeur::HexaToDecimal(const char* Hexa)
 {
   int ret = 0, t = 0, n = 0;
   const char *c = Hexa;

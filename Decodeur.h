@@ -1,6 +1,6 @@
 
-#ifndef DecodeurTGP_h
-#define DecodeurTGP_h
+#ifndef Decodeur_h
+#define Decodeur_h
 
 #include "Stream.h"
 
@@ -18,11 +18,11 @@
 /******************************************************************************
 * Definitions
 ******************************************************************************/
-class DecodeurTGP{
+class Decodeur{
 
 public:
-	DecodeurTGP(Stream *stream);
-	DecodeurTGP(Stream *stream,char separateur,int format);
+	Decodeur(Stream *stream);
+	Decodeur(Stream *stream,char separateur,int format);
   	bool isAvailable();
   	int getArgCount();
   	char getCommand();
