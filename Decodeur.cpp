@@ -18,7 +18,7 @@ char  _Commande;      					//Variable pour conserver la commande, seulement le p
 int  _InComIndex;  					//Index pour ajouter les nouveaux caractères entrants au Buffer
 float _Arguments[_maxArg];					//Vecteur pour les arguments suivants la commande
 int  _NbArg;    						//Variable pour le nombre d'argument
-char _separateur;					//Séparateur par défaut est une espace
+char _separateur[2];					//Séparateur par défaut est une espace
 int _base ;						//Variable pour contenir la base
 
 char _CommandeStr[_maxCommandeStr+1]={};			//Variable string pour commande de type string 
@@ -33,7 +33,7 @@ Decodeur::Decodeur(Stream* stream){
 	_MyStream = stream;
 	_InComIndex=0;
 	_NbArg=0;
-	_separateur=' ';
+	_separateur[0]=' ';
 	_base = ENTIER;
 }
 Decodeur::Decodeur(Stream* stream,char separateur, int base){
@@ -41,7 +41,7 @@ Decodeur::Decodeur(Stream* stream,char separateur, int base){
 	_MyStream = stream;
 	_InComIndex=0;
 	_NbArg=0;
-	_separateur=separateur;
+	_separateur[0]=separateur;
 	_base = base;
 }
 /***************************************************************************************
@@ -61,7 +61,7 @@ uniquement le port série Serial0. Donc, il n'y a pas de paramètre selection.
 /****************************************************************
 Fonction pour indiquer si une commande à été reçue.
 ****************************************************************/
-bool Decodeur::isAvailable(){
+bool Decodeur::available(){
 	if(lireBuffer()){
 		decoderCommande();
 		return true;

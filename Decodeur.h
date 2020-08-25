@@ -23,7 +23,7 @@ class Decodeur{
 public:
 	Decodeur(Stream *stream);
 	Decodeur(Stream *stream,char separateur,int format);
-  	bool isAvailable();
+  	bool available();
   	int getArgCount();
   	char getCommand();
   	float getArg(int);

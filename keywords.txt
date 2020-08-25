@@ -12,10 +12,10 @@ Decodeur	KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
-isAvailable()	KEYWORD2
-getArgCount()	KEYWORD2
-getCommand()	KEYWORD2
-getArg(int)	KEYWORD2
+available	KEYWORD2
+getArgCount	KEYWORD2
+getCommand	KEYWORD2
+getArg	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
