@@ -1,9 +1,5 @@
 /****************************************************************
-<<<<<<< HEAD:TGP_Decodeur/Decodeur.cpp
 // Librairie Decodeur
-=======
-// Librairie DecodeurTGP
->>>>>>> 8c521405901a0ccd921a476f90bd7ff61626116b:DecodeurTGP/DecodeurTGP.cpp
 //Auteurs : Claude Bouchard
 //Date : septembre 2010
 //version : 1.0
@@ -11,11 +7,7 @@
 //arguments dans un format simplifié
 //***************************************************************/
 #include "Stream.h"
-<<<<<<< HEAD:TGP_Decodeur/Decodeur.cpp
 #include "Decodeur.h"
-=======
-#include "DecodeurTGP.h"
->>>>>>> 8c521405901a0ccd921a476f90bd7ff61626116b:DecodeurTGP/DecodeurTGP.cpp
 
 /***************************************************************
 // Déclaration des variables et constantes privées
@@ -36,35 +28,20 @@ Stream* _MyStream;		//Pointeur pour permettre de sélectionner le type de commun
 /***************************************************************
 // Constructeur
 //***************************************************************/
-<<<<<<< HEAD:TGP_Decodeur/Decodeur.cpp
 Decodeur::Decodeur(Stream* stream){
-=======
-DecodeurTGP::DecodeurTGP(Stream* stream){
->>>>>>> 8c521405901a0ccd921a476f90bd7ff61626116b:DecodeurTGP/DecodeurTGP.cpp
 	_IncomingByte=0;
 	_MyStream = stream;
 	_InComIndex=0;
 	_NbArg=0;
-<<<<<<< HEAD:TGP_Decodeur/Decodeur.cpp
 	_separateur[0]=' ';
 	_base = ENTIER;
 }
 Decodeur::Decodeur(Stream* stream,char separateur, int base){
-=======
-	_separateur=' ';
-	_base = ENTIER;
-}
-DecodeurTGP::DecodeurTGP(Stream* stream,char separateur, int base){
->>>>>>> 8c521405901a0ccd921a476f90bd7ff61626116b:DecodeurTGP/DecodeurTGP.cpp
 	_IncomingByte=0;
 	_MyStream = stream;
 	_InComIndex=0;
 	_NbArg=0;
-<<<<<<< HEAD:TGP_Decodeur/Decodeur.cpp
 	_separateur[0]=separateur;
-=======
-	_separateur=separateur;
->>>>>>> 8c521405901a0ccd921a476f90bd7ff61626116b:DecodeurTGP/DecodeurTGP.cpp
 	_base = base;
 }
 /***************************************************************************************
@@ -84,11 +61,7 @@ uniquement le port série Serial0. Donc, il n'y a pas de paramètre selection.
 /****************************************************************
 Fonction pour indiquer si une commande à été reçue.
 ****************************************************************/
-<<<<<<< HEAD:TGP_Decodeur/Decodeur.cpp
 bool Decodeur::available(){
-=======
-bool DecodeurTGP::isAvailable(){
->>>>>>> 8c521405901a0ccd921a476f90bd7ff61626116b:DecodeurTGP/DecodeurTGP.cpp
 	if(lireBuffer()){
 		decoderCommande();
 		return true;
@@ -101,33 +74,21 @@ bool DecodeurTGP::isAvailable(){
 /****************************************************************
 Fonction pour indiquer le nombre d'arguments reçues.
 ****************************************************************/
-<<<<<<< HEAD:TGP_Decodeur/Decodeur.cpp
 int Decodeur::getArgCount(){
-=======
-int DecodeurTGP::getArgCount(){
->>>>>>> 8c521405901a0ccd921a476f90bd7ff61626116b:DecodeurTGP/DecodeurTGP.cpp
 	return _NbArg;
 }
 
 /****************************************************************
 Fonction pour retourner la commande reçue.
 ****************************************************************/
-<<<<<<< HEAD:TGP_Decodeur/Decodeur.cpp
 char Decodeur::getCommand(){
-=======
-char DecodeurTGP::getCommand(){
->>>>>>> 8c521405901a0ccd921a476f90bd7ff61626116b:DecodeurTGP/DecodeurTGP.cpp
 	return _Commande;
 }
 
 /****************************************************************
 Fonction pour retourner l'argument sélectionnée
 ****************************************************************/
-<<<<<<< HEAD:TGP_Decodeur/Decodeur.cpp
 float Decodeur::getArg(int noArg){
-=======
-float DecodeurTGP::getArg(int noArg){
->>>>>>> 8c521405901a0ccd921a476f90bd7ff61626116b:DecodeurTGP/DecodeurTGP.cpp
 if ((noArg<0) || (noArg)>_maxArg){
 	return 0;
 	}
@@ -144,11 +105,7 @@ else{
 //Routine pour décoder les tokens de la commande
 //********************************************************/
 
-<<<<<<< HEAD:TGP_Decodeur/Decodeur.cpp
 bool Decodeur::lireBuffer(){
-=======
-bool DecodeurTGP::lireBuffer(){
->>>>>>> 8c521405901a0ccd921a476f90bd7ff61626116b:DecodeurTGP/DecodeurTGP.cpp
  _IncomingByte = -1;
   while ((_MyStream->available()>0) && (_IncomingByte != '\n')) {
 
@@ -170,11 +127,7 @@ bool DecodeurTGP::lireBuffer(){
 	}
 }
 
-<<<<<<< HEAD:TGP_Decodeur/Decodeur.cpp
 bool Decodeur::decoderCommande()
-=======
-bool DecodeurTGP::decoderCommande()
->>>>>>> 8c521405901a0ccd921a476f90bd7ff61626116b:DecodeurTGP/DecodeurTGP.cpp
 {
 	SplitToken(_InComBuffer, &_Commande, _Arguments, _base);	//on appelle la fonction pour splitter les tokens (entier)
 
@@ -188,11 +141,7 @@ bool DecodeurTGP::decoderCommande()
 /*********************************************************
 // Fonction pour séparer les tokens
 //********************************************************/
-<<<<<<< HEAD:TGP_Decodeur/Decodeur.cpp
 void Decodeur::SplitToken(char Buf[], char *Comm, float Arg[], int base)
-=======
-void DecodeurTGP::SplitToken(char Buf[], char *Comm, float Arg[], int base)
->>>>>>> 8c521405901a0ccd921a476f90bd7ff61626116b:DecodeurTGP/DecodeurTGP.cpp
 {
 	_NbArg = 0;
     char *p;    								// Pointeur pour la valeur de retour de la fonction "strtok"
@@ -231,11 +180,7 @@ void DecodeurTGP::SplitToken(char Buf[], char *Comm, float Arg[], int base)
 // Fonction pour convertir l'argument textuel en type float
 //********************************************************/
 
-<<<<<<< HEAD:TGP_Decodeur/Decodeur.cpp
 float Decodeur::convertirArg(char *p, int base){
-=======
-float DecodeurTGP::convertirArg(char *p, int base){
->>>>>>> 8c521405901a0ccd921a476f90bd7ff61626116b:DecodeurTGP/DecodeurTGP.cpp
 	switch(base){
 	case ENTIER:
 		return atoi(p);
@@ -256,11 +201,7 @@ float DecodeurTGP::convertirArg(char *p, int base){
 // exprimée en valeur hexadécimale en sa valeur décimale
 // correspondante.
 //********************************************************/
-<<<<<<< HEAD:TGP_Decodeur/Decodeur.cpp
 int Decodeur::HexaToDecimal(const char* Hexa)
-=======
-int DecodeurTGP::HexaToDecimal(const char* Hexa)
->>>>>>> 8c521405901a0ccd921a476f90bd7ff61626116b:DecodeurTGP/DecodeurTGP.cpp
 {
   int ret = 0, t = 0, n = 0;
   const char *c = Hexa;
