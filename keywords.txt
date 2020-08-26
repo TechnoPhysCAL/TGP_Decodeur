@@ -1,27 +1,18 @@
 #######################################
-# Syntax Coloring Map for SerieTPhys
+# Syntax Coloring Map for TGP Decodeur
 #######################################
 
 #######################################
 # Datatypes (KEYWORD1)
 #######################################
 
-<<<<<<< HEAD:TGP_Decodeur/keywords.txt
 Decodeur	KEYWORD1
-=======
-DecodeurTGP	KEYWORD1
->>>>>>> 8c521405901a0ccd921a476f90bd7ff61626116b:DecodeurTGP/keywords.txt
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 
-<<<<<<< HEAD:TGP_Decodeur/keywords.txt
 available	KEYWORD2
-=======
-isAvailable	KEYWORD2
-estDisponible	KEYWORD2
->>>>>>> 8c521405901a0ccd921a476f90bd7ff61626116b:DecodeurTGP/keywords.txt
 getArgCount	KEYWORD2
 getCommand	KEYWORD2
 getArg	KEYWORD2
