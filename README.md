@@ -41,18 +41,18 @@ Decodeur(Stream *stream,char separateur, int format)
 ```
 On spécifie l'objet qui implémente la classe [Stream](https://www.arduino.cc/reference/en/language/functions/communication/stream/) (dans Arduino on retrouve les objets suivants: Serial, Ethernet, Wire, SD ). On doit fournir l'addresse de l'objet, en ajoutant le caractère '&' devant celui-ci (voir section Utilisation).
 
-On spécifie facultativement le caractère servant à séparer la commande et les arguments (par défaut, l'espace ' '), ainsi que le format attendu des arguments (mots définis ENTIER, HEXA ou FLOTTANT (TEXTE non implémenté) ).
+On spécifie facultativement le caractère servant à séparer la commande et les arguments (par défaut, l'espace ' '), ainsi que le format attendu des arguments (mots définis ENTIER, HEXA ou FLOTTANT).
 
 ## Méthodes disponibles
 
 ```cpp
-bool available();
+bool available()
 ```
-Cette méthode indique si du texte a été reçu via le Stream et a été décodé.
+Cette méthode indique si du texte a été reçu et décodé.
 
 ---
 ```cpp
-char getCommand();
+char getCommand()
 ```
 Permet de lire le caractère de commande décodé.
 
