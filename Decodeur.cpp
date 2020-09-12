@@ -2,7 +2,7 @@
 // Librairie Decodeur
 //Auteurs : Claude Bouchard
 //Date : septembre 2010
-//version : 1.0
+//version : 1.0.0
 //Description: Permet de lire et décoder des commandes et des
 //arguments dans un format simplifié
 //***************************************************************/
