@@ -4,6 +4,17 @@ Permet de décoder les messages selon le format 'C a1 a2 a3 ...' où C est une l
 
 La librairie fonctionne avec tout objet qui implémente la classe [Stream](https://www.arduino.cc/reference/en/language/functions/communication/stream/); l'objet fournira le texte brut qui sera décodé.
 
+## Notes de version
+
+### 1.1.0 :
+- Correction si le message reçu ne contient qu'un retour de chariot.
+
+### 1.0.0 :
+- Première version officielle, crée à partir de l'ancienne librairie SerieTPhys.
+
+
+
+
 ## Utilisation
 
 ```cpp
