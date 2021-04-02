@@ -1,8 +1,8 @@
 /****************************************************************
 // Librairie Decodeur
-//Auteurs : Claude Bouchard
-//Date : septembre 2010
-//version : 1.0.0
+//Auteurs : Claude Bouchard / Jude Levasseur
+//Date : avril 2021
+//version : 1.1.0
 //Description: Permet de lire et décoder des commandes et des
 //arguments dans un format simplifié
 //***************************************************************/
@@ -48,6 +48,10 @@ Decodeur::Decodeur(Stream *stream, char separateur, int base)
 /***************************************************************************************
 //Méthodes publiques
 //***************************************************************************************/
+bool Decodeur::estDisponible() { return available(); }			  //Temporaire pour transition.
+int Decodeur::nombreArgument() { return getArgCount(); }		  //Temporaire pour transition.
+char Decodeur::lireCommande() { return getCommand(); }			  //Temporaire pour transition.
+float Decodeur::lireArgument(int noArg) { return getArg(noArg); } //Temporaire pour transition.
 
 /****************************************************************
 Fonction pour initialiser le décodage du Stream de données.
@@ -73,7 +77,6 @@ bool Decodeur::available()
 		return false;
 	}
 }
-bool Decodeur::estDisponible() { return available(); } //Temporaire pour transition.
 
 /****************************************************************
 Fonction pour indiquer le nombre d'arguments reçues.
@@ -82,7 +85,7 @@ int Decodeur::getArgCount()
 {
 	return _NbArg;
 }
-int Decodeur::nombreArgument() { return getArgCount(); } //Temporaire pour transition.
+
 /****************************************************************
 Fonction pour retourner la commande reçue.
 ****************************************************************/
@@ -90,7 +93,7 @@ char Decodeur::getCommand()
 {
 	return _Commande;
 }
-char Decodeur::lireCommande() { return getCommand(); } //Temporaire pour transition.
+
 /****************************************************************
 Fonction pour retourner l'argument sélectionnée
 ****************************************************************/
@@ -105,7 +108,7 @@ float Decodeur::getArg(int noArg)
 		return _Arguments[noArg];
 	}
 }
-float Decodeur::lireArgument(int noArg) { return getArg(noArg); } //Temporaire pour transition.
+
 /***************************************************************************************
 //Méthodes privées
 //**************************************************************************************/
@@ -133,7 +136,16 @@ bool Decodeur::lireBuffer()
 	}
 	if (_IncomingByte == '\n')
 	{
-		return true;
+		if (_InComIndex < 2)
+		{					 //Correction pour une réception avec \n seulement
+			_InComIndex = 0; //on flush le buffer si seulement \n
+			_InComBuffer[_InComIndex] = '\0';
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 	else
 	{
