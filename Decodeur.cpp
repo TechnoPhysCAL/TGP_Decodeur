@@ -1,8 +1,8 @@
 /****************************************************************
 // Librairie Decodeur
 //Auteurs : Claude Bouchard / Jude Levasseur
-//Date : avril 2021
-//version : 1.1.0
+//Date : nov 2021
+//version : 1.1.1
 //Description: Permet de lire et décoder des commandes et des
 //arguments dans un format simplifié
 //***************************************************************/
@@ -134,7 +134,7 @@ bool Decodeur::lireBuffer()
 		++_InComIndex;
 		_InComBuffer[_InComIndex] = '\0'; //Déplace le caractère de fin de chaine
 	}
-	if (_IncomingByte == '\n')
+	if (_IncomingByte == '\n' || _IncomingByte == '\r')
 	{
 		if (_InComIndex < 2)
 		{					 //Correction pour une réception avec \n seulement
