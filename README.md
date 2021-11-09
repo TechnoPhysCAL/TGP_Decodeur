@@ -7,6 +7,9 @@ La librairie fonctionne avec tout objet qui implémente la classe [Stream](https
 ## Notes de version
 
 ### 1.1.0 :
+- Idem que précédent, avec un correcif pour le caractère '\n' et '\r'.
+
+### 1.1.0 :
 - Correction si le message reçu ne contient qu'un retour de chariot.
 
 ### 1.0.0 :
