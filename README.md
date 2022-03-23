@@ -6,7 +6,10 @@ La librairie fonctionne avec tout objet qui implémente la classe [Stream](https
 
 ## Notes de version
 
-### 1.1.0 :
+### 1.1.2 :
+- Changé l'URL du projet pour pointer sur GitHub.
+-  
+### 1.1.1 :
 - Idem que précédent, avec un correcif pour le caractère '\n' et '\r'.
 
 ### 1.1.0 :
