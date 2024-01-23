@@ -12,7 +12,6 @@
 #define ENTIER 0
 #define HEXA 1
 #define FLOTTANT 2
-#define TEXTE 3
 
 /******************************************************************************
 * Definitions
@@ -22,22 +21,18 @@ class Decodeur
 
 public:
 	Decodeur(Stream *stream);
-	Decodeur(Stream *stream, char separateur, int format);
+	Decodeur(Stream *stream, char separateur, int base);
+	setSeparateur(char separateur);
 	bool available();
-	bool estDisponible(); //Temporaire pour transition.
 	int getArgCount();
-	int nombreArgument(); //Temporaire pour transition.
 	char getCommand();
-	char lireCommande(); //Temporaire pour transition.
 	float getArg(int);
-	float lireArgument(int); //Temporaire pour transition.
 
 private:
 	bool lireBuffer();
-	bool decoderCommande();
 	float convertirArg(char *p, int base);
 	int HexaToDecimal(const char *Hexa);
-	void SplitToken(char Buf[], char *Comm, float Arg[], int base);
+	
 };
 
 #endif
