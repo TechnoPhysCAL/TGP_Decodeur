@@ -44,7 +44,7 @@ La librairie permet également de supporter des commandes ou des arguments sous 
 
 - Avant le début du décodage du message, la fonction trim() est appliquée sur le texte reçu, ce qui aura pour effet de retirer tout espace blanc avant et après le message.
 
-- Lors du décodage du message, deux caractères de séparation consécutifs seront interprétés comme contenant un argument vide entre les deux. Par exemple, le message "g 1  2" doit être vu comme étant une commande contenant trois arguments "g 1 {vide} 2". C'est donc à l'utilisateur de prendre soin du formatage de ses messages.
+- Lors du décodage du message, deux caractères de séparation consécutifs seront interprétés comme contenant un argument vide entre les deux. Par exemple, le message "g 1  2" doit être vu comme étant une commande contenant trois arguments "g 1 {vide} 2". C'est donc à l'utilisateur de prendre soin du formatage de ses messages pour éviter ce genre d'arguments "fantômes".
 
 
 ### Exemples
