@@ -15,19 +15,23 @@ void loop()
     Serial.println("---------------------------------------------------");
     Serial.print("Commande (une lettre) : ");
     Serial.println(monDecodeur.getCommand());  //Envoyer sur le port série le nom de la commande décodée.
-    Serial.print("Commande (complète)   : ");
+    Serial.print("Commande (mot complet): ");
     Serial.println(monDecodeur.getCommandString());  //Envoyer sur le port série le nom de la commande décodée.
 
     Serial.print("Nombre d'arguments    : ");
     Serial.println(monDecodeur.getArgCount()); //Envoyer sur le port série le nombre d'arguments décodée.
     
-    Serial.print("Arguments             : ");
+    Serial.print("Arguments numériques  : ");
     for (int no = 0; no < monDecodeur.getArgCount(); no++) //Pour chaque argument
     {
-      Serial.print(monDecodeur.getArg(no)); //Envoyer sur le port série la valeur de l'argument (on assume qu'il est numérique).
-      Serial.print('(');
+      Serial.print(monDecodeur.getArg(no)); //Envoyer sur le port série la valeur de l'argument (si on parvient à l'interpréter comme un nombre).
+      Serial.print(" , ");
+    }
+    
+    Serial.print("\nArguments textuels   : ");
+    for (int no = 0; no < monDecodeur.getArgCount(); no++) //Pour chaque argument
+    {
       Serial.print(monDecodeur.getArgString(no));//Envoyer sur le port série le texte brut de l'argument.
-      Serial.print(')');
       Serial.print(" , ");
     }
     Serial.println("");
