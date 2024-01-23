@@ -15,6 +15,7 @@ Decodeur	KEYWORD1
 available	KEYWORD2
 getArgCount	KEYWORD2
 getCommand	KEYWORD2
+getCommandWord	KEYWORD2
 getArg	KEYWORD2
 
 #######################################
@@ -23,4 +24,3 @@ getArg	KEYWORD2
 FLOTTANT	LITERAL1
 HEXA	LITERAL1
 ENTIER	LITERAL1
-TEXTE	LITERAL1
