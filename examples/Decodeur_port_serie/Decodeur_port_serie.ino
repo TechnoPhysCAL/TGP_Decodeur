@@ -1,12 +1,3 @@
-/*
-  Librairie TPG DECODEUR - Decodeur_port_serie.ino
-
-  ###DESCRIPTION
-
-  Note: ###NOTE
-
-*/
-
 #include <Decodeur.h> //Pour utiliser la librairie Decodeur
 
 Decodeur monDecodeur(&Serial); //Le décodeur utilisera le texte provenant du port Serie
