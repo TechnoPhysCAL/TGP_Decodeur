@@ -7,7 +7,7 @@ La librairie fonctionne avec tout objet qui implémente la classe [Stream](https
 ## Notes de version
 
 ### 2.0.0:
-- Refonte du code au comple. On laisse tomber la mise en buffer des arguments, seul tout le message reçu est stocké dans un String et on décode les arguments seulement à la demande. 
+- Refonte du code au complet. On laisse tomber la mise en buffer des arguments, on stocke tout le message reçu dans un String et on décode les arguments seulement sur demande. 
 - Ajout des méthodes getCommandString() et getArgString() pour permettre d'utiliser tout le texte tel quel de chaque morceau du message.
 
 ### 1.1.2 :
