@@ -15,8 +15,10 @@ Decodeur	KEYWORD1
 available	KEYWORD2
 getArgCount	KEYWORD2
 getCommand	KEYWORD2
-getCommandWord	KEYWORD2
+getCommandString	KEYWORD2
 getArg	KEYWORD2
+getArgString	KEYWORD2
+getMessage	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
