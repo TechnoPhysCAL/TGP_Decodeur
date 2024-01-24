@@ -9,6 +9,7 @@ La librairie fonctionne avec tout objet qui implémente la classe [Stream](https
 ### 2.0.0:
 - Refonte du code au complet. On laisse tomber la mise en buffer des arguments, on stocke tout le message reçu dans un String et on décode les arguments seulement sur demande. 
 - Ajout des méthodes getCommandString() et getArgString() pour permettre d'utiliser tout le texte tel quel de chaque morceau du message.
+- Ajout de la méthode getMessage() pour relire le message trimé reçu.
 
 ### 1.1.2 :
 - Changé l'URL du projet pour pointer sur GitHub.
@@ -29,7 +30,7 @@ La librairie fonctionne avec tout objet qui implémente la classe [Stream](https
 
 On utilise cette librairie pour implémenter un mode de message simplifié du type "commande arg0 arg1 arg2 ...", où "commande"" est généralement un seul caractère et les arguments sont habituellement numériques, et peuvent se suivre sans limite théorique.
 
-Voici des exemples de commandes qui pourrait être utilisée:
+Voici des exemples de messages qui pourrait être utilisée:
 "R 1 2"
 "T 3.45"
 "g -7.8 0 45"
@@ -154,4 +155,4 @@ La variable retournée est de type float, on peut le réduire à un entier par '
 ```cpp
 String getArgString(int index)
 ```
-Permet de lire l'argument d'index donné, sous forme de String. Retourne une chaîne vide "" en cas d'indice non valide.
+Permet de lire l'argument d'isndex donné, sous forme de String. Retourne une chaîne vide "" en cas d'indice non valide.
