@@ -25,13 +25,14 @@ public:
 	String getCommandString();
 	float getArg(int);
 	String getArgString(int);
+	String getMessage();
 
 private:
 	bool lireBuffer();
 	void updateArgCount();
 	float convertirArg(String p, int base);
 	int HexaToDecimal(const char *Hexa);
-	String _instruction; // Buffer pour emmagasiner le dernier message reçu
+	String _message;     // Buffer pour emmagasiner le dernier message reçu
 	int _NbArg;			 // Variable pour le nombre d'arguments contenu dans le message
 	char _separateur;	 // Charactère de séparation dans le message
 	int _base;			 // Variable pour contenir la base numérique (Entier, flottant ou hexadécimal)

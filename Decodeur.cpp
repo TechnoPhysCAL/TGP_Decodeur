@@ -23,7 +23,7 @@ Decodeur::Decodeur(Stream *stream)
 	_separateur = ' ';
 	_base = ENTIER;
 	_NbArg = 0;
-	_instruction = "";
+	_message = "";
 }
 
 /****************************************************************
@@ -35,7 +35,7 @@ Decodeur::Decodeur(Stream *stream, char separateur, int base)
 	_separateur = separateur;
 	_base = base;
 	_NbArg = 0;
-	_instruction = "";
+	_message = "";
 }
 
 /****************************************************************
@@ -59,7 +59,7 @@ Fonction pour retourner la commande reçue, seulement le premier caractère.
 ****************************************************************/
 char Decodeur::getCommand()
 {
-	return _instruction.length() == 0 ? 0 : _instruction.charAt(0);
+	return _message.length() == 0 ? 0 : _message.charAt(0);
 }
 
 /****************************************************************
@@ -67,7 +67,7 @@ Fonction pour retourner la commande reçue, tout le mot complet en String.
 ****************************************************************/
 String Decodeur::getCommandString()
 {
-	return _instruction.length() == 0 ? "" : _instruction.substring(0, _instruction.indexOf(_separateur, 1));
+	return _message.length() == 0 ? "" : _message.substring(0, _message.indexOf(_separateur, 1));
 }
 
 /****************************************************************
@@ -76,27 +76,27 @@ Fonction pour retourner l'argument sélectionné
 float Decodeur::getArg(int noArg)
 {
 	int compteur = noArg + 1;
-	if (_instruction.length() == 0)
+	if (_message.length() == 0)
 	{
 		return 0;
 	}
 	int decalage = 0;
 	while (compteur > 0 && decalage >= 0)
 	{
-		decalage = _instruction.indexOf(_separateur, decalage + 1);
+		decalage = _message.indexOf(_separateur, decalage + 1);
 		compteur--;
 	}
-	int nextDecalage = _instruction.indexOf(_separateur, decalage + 1);
+	int nextDecalage = _message.indexOf(_separateur, decalage + 1);
 
 	if (decalage > 0)
 	{
 		if (nextDecalage > decalage)
 		{
-			return convertirArg(_instruction.substring(decalage + 1, nextDecalage), _base);
+			return convertirArg(_message.substring(decalage + 1, nextDecalage), _base);
 		}
 		else
 		{
-			return convertirArg(_instruction.substring(decalage + 1), _base);
+			return convertirArg(_message.substring(decalage + 1), _base);
 		}
 	}
 	else
@@ -111,33 +111,41 @@ Fonction pour retourner l'argument sélectionné sous forme textuel String
 String Decodeur::getArgString(int noArg)
 {
 	int compteur = noArg + 1;
-	if (_instruction.length() == 0)
+	if (_message.length() == 0)
 	{
 		return "";
 	}
 	int decalage = 0;
 	while (compteur > 0 && decalage >= 0)
 	{
-		decalage = _instruction.indexOf(_separateur, decalage + 1);
+		decalage = _message.indexOf(_separateur, decalage + 1);
 		compteur--;
 	}
-	int nextDecalage = _instruction.indexOf(_separateur, decalage + 1);
+	int nextDecalage = _message.indexOf(_separateur, decalage + 1);
 
 	if (decalage > 0)
 	{
 		if (nextDecalage > decalage)
 		{
-			return _instruction.substring(decalage + 1, nextDecalage);
+			return _message.substring(decalage + 1, nextDecalage);
 		}
 		else
 		{
-			return _instruction.substring(decalage + 1);
+			return _message.substring(decalage + 1);
 		}
 	}
 	else
 	{
 		return "";
 	}
+}
+
+
+/****************************************************************
+Fonction pour obtenir le message original entier trimmé.
+****************************************************************/
+String Decodeur::getMessage(){
+	return _message;
 }
 
 /***************************************************************************************
@@ -152,10 +160,10 @@ bool Decodeur::lireBuffer()
 {
 	if (_MyStream->available())
 	{
-		_instruction = _MyStream->readString();
-		_instruction.trim();
+		_message = _MyStream->readString();
+		_message.trim();
 		updateArgCount();
-		if (_instruction.length() > 0)
+		if (_message.length() > 0)
 		{
 
 			return true;
@@ -172,11 +180,11 @@ void Decodeur::updateArgCount()
 {
 	_NbArg = 0;
 
-	int decalage = _instruction.indexOf(_separateur, 1);
+	int decalage = _message.indexOf(_separateur, 1);
 
 	while (decalage > 0)
 	{
-		decalage = _instruction.indexOf(_separateur, decalage + 1);
+		decalage = _message.indexOf(_separateur, decalage + 1);
 		_NbArg++;
 	}
 }
