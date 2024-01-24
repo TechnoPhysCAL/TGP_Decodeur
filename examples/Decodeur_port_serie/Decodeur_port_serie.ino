@@ -13,6 +13,9 @@ void loop()
   if (monDecodeur.available()) // Si du texte a été reçu par le décodeur;
   {
     Serial.println("---------------------------------------------------");
+    Serial.print("Message reçu          : ");
+    Serial.println(monDecodeur.getMessage());
+    
     Serial.print("Commande (une lettre) : ");
     Serial.println(monDecodeur.getCommand());  //Envoyer sur le port série le nom de la commande décodée.
     Serial.print("Commande (mot complet): ");
