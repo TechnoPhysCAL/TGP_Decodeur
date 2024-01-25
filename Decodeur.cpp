@@ -17,25 +17,15 @@
 /***************************************************************
 // Constructeur
 //***************************************************************/
-Decodeur::Decodeur(Stream *stream)
-{
-	_MyStream = stream;
-	_separateur = ' ';
-	_base = ENTIER;
-	_NbArg = 0;
-	_message = "";
-}
-
-/****************************************************************
-// Constructeur spécialisé pour modifier le caractère de séparation et la base numérique
-****************************************************************/
-Decodeur::Decodeur(Stream *stream, char separateur, int base)
+Decodeur::Decodeur(Stream *stream, char separateur, char finDeMessage, int base)
 {
 	_MyStream = stream;
 	_separateur = separateur;
 	_base = base;
-	_NbArg = 0;
+	_finDeMessage = finDeMessage;
+
 	_message = "";
+	_NbArg = 0;
 }
 
 /****************************************************************
@@ -75,34 +65,7 @@ Fonction pour retourner l'argument sélectionné
 ****************************************************************/
 float Decodeur::getArg(int noArg)
 {
-	int compteur = noArg + 1;
-	if (_message.length() == 0)
-	{
-		return 0;
-	}
-	int decalage = 0;
-	while (compteur > 0 && decalage >= 0)
-	{
-		decalage = _message.indexOf(_separateur, decalage + 1);
-		compteur--;
-	}
-	int nextDecalage = _message.indexOf(_separateur, decalage + 1);
-
-	if (decalage > 0)
-	{
-		if (nextDecalage > decalage)
-		{
-			return convertirArg(_message.substring(decalage + 1, nextDecalage), _base);
-		}
-		else
-		{
-			return convertirArg(_message.substring(decalage + 1), _base);
-		}
-	}
-	else
-	{
-		return 0;
-	}
+	return convertirArg(getArgString(noArg));
 }
 
 /****************************************************************
@@ -140,12 +103,37 @@ String Decodeur::getArgString(int noArg)
 	}
 }
 
-
 /****************************************************************
 Fonction pour obtenir le message original entier trimmé.
 ****************************************************************/
-String Decodeur::getMessage(){
+String Decodeur::getMessage()
+{
 	return _message;
+}
+
+void Decodeur::setSeparateur(char value)
+{
+	_separateur = value;
+}
+char Decodeur::getSeparateur()
+{
+	return _separateur;
+}
+void Decodeur::setFinDeMessage(char value)
+{
+	_finDeMessage = value;
+}
+char Decodeur::getFinDeMessage()
+{
+	return _finDeMessage;
+}
+void Decodeur::setBase(int value)
+{
+	_base = value;
+}
+int Decodeur::getBase()
+{
+	return _base;
 }
 
 /***************************************************************************************
@@ -160,7 +148,7 @@ bool Decodeur::lireBuffer()
 {
 	if (_MyStream->available())
 	{
-		_message = _MyStream->readString();
+		_message = _MyStream->readStringUntil(_finDeMessage);
 		_message.trim();
 		updateArgCount();
 		if (_message.length() > 0)
@@ -192,10 +180,12 @@ void Decodeur::updateArgCount()
 // Fonction pour convertir l'argument textuel en nombre, selon la base numérique prévue.
 //********************************************************/
 
-float Decodeur::convertirArg(String p, int base)
+float Decodeur::convertirArg(String p)
 {
+	if (p.length() == 0)
+		return 0;
 	const char *c = p.c_str();
-	switch (base)
+	switch (_base)
 	{
 	case ENTIER:
 		return atoi(c);
