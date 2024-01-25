@@ -35,12 +35,12 @@ Voici des exemples de messages qui pourrait être utilisée:
 "R 1 2"
 "T 3.45"
 "g -7.8 0 45"
-```cpp
+```
 La librairie permet également de supporter des commandes ou des arguments sous forme de texte. Voici des exemples:
 ```cpp
 "tourner 45"
 "set version 2"
-```cpp
+```
 ### Considérations
 
 - Avant le début du décodage du message, la fonction trim() est appliquée sur le texte reçu, ce qui aura pour effet de retirer tout espace blanc avant et après le message.
