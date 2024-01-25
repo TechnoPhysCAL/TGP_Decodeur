@@ -155,4 +155,4 @@ La variable retournée est de type float, on peut le réduire à un entier par '
 ```cpp
 String getArgString(int index)
 ```
-Permet de lire l'argument d'isndex donné, sous forme de String. Retourne une chaîne vide "" en cas d'indice non valide.
+Permet de lire l'argument d'index donné, sous forme de String. Retourne une chaîne vide "" en cas d'indice non valide.
