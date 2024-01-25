@@ -15,7 +15,7 @@ La librairie fonctionne avec tout objet qui implémente la classe [Stream](https
 - Changé l'URL du projet pour pointer sur GitHub.
 
 ### 1.1.1 :
-- Idem que précédent, avec un correcif pour le caractère '\n' et '\r'.
+- Idem que précédent, avec un correctif pour le caractère '\n' et '\r'.
 
 ### 1.1.0 :
 - Correction si le message reçu ne contient qu'un retour de chariot.
@@ -31,14 +31,16 @@ La librairie fonctionne avec tout objet qui implémente la classe [Stream](https
 On utilise cette librairie pour implémenter un mode de message simplifié du type "commande arg0 arg1 arg2 ...", où "commande"" est généralement un seul caractère et les arguments sont habituellement numériques, et peuvent se suivre sans limite théorique.
 
 Voici des exemples de messages qui pourrait être utilisée:
+```cpp
 "R 1 2"
 "T 3.45"
 "g -7.8 0 45"
-
+```cpp
 La librairie permet également de supporter des commandes ou des arguments sous forme de texte. Voici des exemples:
+```cpp
 "tourner 45"
 "set version 2"
-
+```cpp
 ### Considérations
 
 - Avant le début du décodage du message, la fonction trim() est appliquée sur le texte reçu, ce qui aura pour effet de retirer tout espace blanc avant et après le message.
