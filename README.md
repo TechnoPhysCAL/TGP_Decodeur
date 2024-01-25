@@ -162,7 +162,7 @@ Permet de lire l'argument d'index donné, sous forme de String. Retourne une cha
 
 ---
 ```cpp
-void setSeparateur(char);
+void setSeparateur(char value);
 char getSeparateur();
 ```
 Permet de lire et écrire le caractère pour séparer les arguments du message.
@@ -170,14 +170,14 @@ Permet de lire et écrire le caractère pour séparer les arguments du message.
 
 ---
 ```cpp
-void setFinDeMessage(char);
+void setFinDeMessage(char value);
 char getFinDeMessage();
 ```
 Permet de lire et écrire le caractère marquant la fin du message.
 
 ---
 ```cpp
-void setBase(int);
+void setBase(int value);
 int getBase();
 ```
 Permet de lire et écrire le type de base numérique attendu pour les arguments (ENTIER, FLOTTANT ou HEXA).
