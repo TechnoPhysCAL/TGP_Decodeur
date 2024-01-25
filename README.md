@@ -109,6 +109,8 @@ void loop()
 ## Constructeurs
 ```cpp
 Decodeur(Stream *stream)
+Decodeur(Stream *stream,char separateur)
+Decodeur(Stream *stream,char separateur, char finDeMessage)
 Decodeur(Stream *stream,char separateur, char finDeMessage, int base)
 ```
 On spécifie l'objet qui implémente la classe [Stream](https://www.arduino.cc/reference/en/language/functions/communication/stream/) (dans Arduino on retrouve les objets suivants: Serial, Ethernet, Wire, SD). On doit fournir l'addresse de l'objet, en ajoutant le caractère '&' devant celui-ci (voir section Utilisation).
@@ -159,21 +161,21 @@ Permet de lire l'argument d'index donné, sous forme de String. Retourne une cha
 ---
 ```cpp
 void setSeparateur(char);
-	char getSeparateur();
+char getSeparateur();
 ```
 Permet de lire et écrire le caractère pour séparer les arguments du message.
 
 
 ---
 ```cpp
-	void setFinDeMessage(char);
-	char getFinDeMessage();
+void setFinDeMessage(char);
+char getFinDeMessage();
 ```
 Permet de lire et écrire le caractère marquant la fin du message.
 
 ---
 ```cpp
-	void setBase(int);
-	int getBase();
+void setBase(int);
+int getBase();
 ```
 Permet de lire et écrire le type de base numérique attendu pour les arguments (ENTIER, FLOTTANT ou HEXA).
