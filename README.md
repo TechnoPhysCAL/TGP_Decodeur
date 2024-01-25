@@ -7,9 +7,11 @@ La librairie fonctionne avec tout objet qui implémente la classe [Stream](https
 ## Notes de version
 
 ### 2.0.0:
-- Refonte du code au complet. On laisse tomber la mise en buffer des arguments, on stocke tout le message reçu dans un String et on décode les arguments seulement sur demande. 
-- Ajout des méthodes getCommandString() et getArgString() pour permettre d'utiliser tout le texte tel quel de chaque morceau du message.
-- Ajout de la méthode getMessage() pour relire le message trimé reçu.
+- Refonte du code au complet. On laisse tomber la mise en buffer des arguments, on stocke tout le message reçu dans un String et on décode les arguments seulement sur demande;
+- Ajout des méthodes getCommandString() et getArgString() pour permettre d'utiliser tout le texte tel quel de chaque morceau du message;
+- Ajout de la méthode getMessage() pour relire le message trimé reçu;
+- Ajout du paramètre "finDeMessage" pour modifier le caractère qui délimite la fin du message;
+- Ajout des getters et setters pour les parametres "séparateur", "finDeMessage" et "base".
 
 ### 1.1.2 :
 - Changé l'URL du projet pour pointer sur GitHub.
