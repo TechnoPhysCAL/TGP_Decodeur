@@ -19,6 +19,12 @@ getCommandString	KEYWORD2
 getArg	KEYWORD2
 getArgString	KEYWORD2
 getMessage	KEYWORD2
+getSeparateur	KEYWORD2
+setSeparateur	KEYWORD2
+getFinDeMessage	KEYWORD2
+setFinDeMessage	KEYWORD2
+getBase	KEYWORD2
+setBase	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

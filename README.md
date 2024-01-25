@@ -41,11 +41,9 @@ La librairie permet également de supporter des commandes ou des arguments sous 
 
 ### Considérations
 
-- La librairie utilise la fonction "readString()" de l'objet Stream pour obtenir un message complet. C'est donc de la responsabilité de l'objet Stream de définir comment doit être interprété la fin d'un message.
-
 - Avant le début du décodage du message, la fonction trim() est appliquée sur le texte reçu, ce qui aura pour effet de retirer tout espace blanc avant et après le message.
 
-- Lors du décodage du message, deux caractères de séparation consécutifs seront interprétés comme contenant un argument vide entre les deux. Par exemple, le message "g 1  2" doit être vu comme étant une commande contenant trois arguments "g 1 {vide} 2". C'est donc à l'utilisateur de prendre soin du formatage de ses messages pour éviter ce genre d'arguments "fantômes".
+- Lors du décodage du message, deux caractères de séparation consécutifs seront interprétés comme contenant ayant un argument vide entre les deux. Par exemple, le message "g 1  2" doit être vu comme étant une commande contenant trois arguments "g 1 {vide} 2". C'est donc à l'utilisateur de prendre soin du formatage de ses messages pour éviter ce genre d'arguments "fantômes".
 
 
 ### Exemples
@@ -111,11 +109,11 @@ void loop()
 ## Constructeurs
 ```cpp
 Decodeur(Stream *stream)
-Decodeur(Stream *stream,char separateur, int base)
+Decodeur(Stream *stream,char separateur, char finDeMessage, int base)
 ```
 On spécifie l'objet qui implémente la classe [Stream](https://www.arduino.cc/reference/en/language/functions/communication/stream/) (dans Arduino on retrouve les objets suivants: Serial, Ethernet, Wire, SD). On doit fournir l'addresse de l'objet, en ajoutant le caractère '&' devant celui-ci (voir section Utilisation).
 
-On spécifie facultativement le caractère servant à séparer la commande et les arguments (par défaut, l'espace ' '), ainsi que la base attendu des arguments (mots définis ENTIER, HEXA ou FLOTTANT).
+On spécifie facultativement le caractère servant à séparer la commande et les arguments (par défaut, l'espace ' '), le caractère servant à signifier la fin du message (par défaut '\n') ainsi que la base attendu des arguments (mots définis ENTIER, HEXA ou FLOTTANT).
 
 ## Méthodes disponibles
 
@@ -156,3 +154,26 @@ La variable retournée est de type float, on peut le réduire à un entier par '
 String getArgString(int index)
 ```
 Permet de lire l'argument d'index donné, sous forme de String. Retourne une chaîne vide "" en cas d'indice non valide.
+
+
+---
+```cpp
+void setSeparateur(char);
+	char getSeparateur();
+```
+Permet de lire et écrire le caractère pour séparer les arguments du message.
+
+
+---
+```cpp
+	void setFinDeMessage(char);
+	char getFinDeMessage();
+```
+Permet de lire et écrire le caractère marquant la fin du message.
+
+---
+```cpp
+	void setBase(int);
+	int getBase();
+```
+Permet de lire et écrire le type de base numérique attendu pour les arguments (ENTIER, FLOTTANT ou HEXA).
