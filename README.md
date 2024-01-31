@@ -47,7 +47,7 @@ La librairie permet également de supporter des commandes ou des arguments sous 
 ```
 ### Considérations
 
-- Avant le début du décodage du message, la fonction trim() est appliquée sur le texte reçu, ce qui aura pour effet de retirer tout espace blanc avant et après le message.
+- Avant le début du décodage du message, la fonction trim() est appliquée sur le texte reçu, ce qui aura pour effet de retirer tout espace blanc avant et après le message. On tentera également de retirer du message le caractère invisible \0.
 
 - Lors du décodage du message, deux caractères de séparation consécutifs seront interprétés comme contenant ayant un argument vide entre les deux. Par exemple, le message "g\_1\_\_2" où '\_' serait le caractère séparateur, doit être vu comme étant une commande contenant trois arguments "g\_1\_{vide}\_2". C'est donc à l'utilisateur de prendre soin du formatage de ses messages pour éviter ce genre d'arguments "fantômes".
 
@@ -125,7 +125,13 @@ On spécifie facultativement le caractère servant à séparer la commande et le
 ## Méthodes disponibles
 
 ```cpp
-bool available()
+bool refresh()
+```
+Cette méthode permet de consommer le Stream et mettre à jour les valeurs du décodeur. La fonction trim() est appliquée sur le texte reçu, ce qui aura pour effet de retirer tout espace blanc avant et après le message. On tentera également de retirer du message le caractère invisible \0. Cette méthode retourne le même résultat que la méthode isAvailable().
+
+---
+```cpp
+bool isAvailable()
 ```
 Cette méthode indique si un message a été reçu et décodé.
 

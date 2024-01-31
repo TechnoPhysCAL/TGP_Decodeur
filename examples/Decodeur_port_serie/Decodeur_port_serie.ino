@@ -17,7 +17,7 @@ void loop()
     Serial.print("Message reçu          : ");
     Serial.println(monDecodeur.getMessage());
     
-    Serial.print("Commande (une lettre) : ");
+    Serial.print("Commande (un caractère) : ");
     Serial.println(monDecodeur.getCommand());  //Envoyer sur le port série le nom de la commande décodée.
     Serial.print("Commande (mot complet): ");
     Serial.println(monDecodeur.getCommandString());  //Envoyer sur le port série le nom de la commande décodée.

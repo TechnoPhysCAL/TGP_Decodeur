@@ -136,7 +136,6 @@ char Decodeur::getFinDeMessage()
 	return _finDeMessage;
 }
 
-
 /***************************************************************************************
 //Méthodes privées
 //**************************************************************************************/
@@ -151,9 +150,13 @@ void Decodeur::lireBuffer()
 	{
 		_message = _MyStream->readStringUntil(_finDeMessage);
 		_message.trim();
-		_message.replace("\0","");
-		updateArgCount();
+		_message.replace("\0", "");
 	}
+	else
+	{
+		_message = "";
+	}
+	updateArgCount();
 }
 
 /*********************************************************
