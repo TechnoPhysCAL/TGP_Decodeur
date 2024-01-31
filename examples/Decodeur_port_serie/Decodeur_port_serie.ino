@@ -10,7 +10,8 @@ void setup()
 void loop()
 {
 
-  if (monDecodeur.available()) // Si du texte a été reçu par le décodeur;
+  monDecodeur.refresh();
+  if (monDecodeur.isAvailable()) // Si du texte a été reçu par le décodeur;
   {
     Serial.println("---------------------------------------------------");
     Serial.print("Message reçu          : ");

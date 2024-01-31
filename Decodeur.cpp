@@ -17,23 +17,31 @@
 /***************************************************************
 // Constructeur
 //***************************************************************/
-Decodeur::Decodeur(Stream *stream, char separateur, char finDeMessage, int base)
+Decodeur::Decodeur(Stream *stream, char separateur, char finDeMessage)
 {
 	_MyStream = stream;
 	_separateur = separateur;
-	_base = base;
-	_finDeMessage = finDeMessage;
 
+	_finDeMessage = finDeMessage;
 	_message = "";
 	_NbArg = 0;
 }
 
 /****************************************************************
+Fonction pour consommer le stream et mettre à jour les informations du décodeur.
+****************************************************************/
+bool Decodeur::refresh()
+{
+	lireBuffer();
+	return isAvailable();
+}
+
+/****************************************************************
 Fonction pour indiquer si une commande à été reçue.
 ****************************************************************/
-bool Decodeur::available()
+bool Decodeur::isAvailable()
 {
-	return lireBuffer();
+	return _message.length() > 0;
 }
 
 /****************************************************************
@@ -63,9 +71,9 @@ String Decodeur::getCommandString()
 /****************************************************************
 Fonction pour retourner l'argument sélectionné
 ****************************************************************/
-float Decodeur::getArg(int noArg)
+float Decodeur::getArg(int noArg, unsigned int base)
 {
-	return convertirArg(getArgString(noArg));
+	return convertirArg(getArgString(noArg), base);
 }
 
 /****************************************************************
@@ -127,14 +135,7 @@ char Decodeur::getFinDeMessage()
 {
 	return _finDeMessage;
 }
-void Decodeur::setBase(int value)
-{
-	_base = value;
-}
-int Decodeur::getBase()
-{
-	return _base;
-}
+
 
 /***************************************************************************************
 //Méthodes privées
@@ -144,21 +145,15 @@ int Decodeur::getBase()
 //Routine pour stocker le dernier message reçu et mettre à jour les variables nécessaires.
 //********************************************************/
 
-bool Decodeur::lireBuffer()
+void Decodeur::lireBuffer()
 {
 	if (_MyStream->available())
 	{
 		_message = _MyStream->readStringUntil(_finDeMessage);
 		_message.trim();
+		_message.replace("\0","");
 		updateArgCount();
-		if (_message.length() > 0)
-		{
-
-			return true;
-		}
 	}
-
-	return false;
 }
 
 /*********************************************************
@@ -180,20 +175,17 @@ void Decodeur::updateArgCount()
 // Fonction pour convertir l'argument textuel en nombre, selon la base numérique prévue.
 //********************************************************/
 
-float Decodeur::convertirArg(String p)
+float Decodeur::convertirArg(String p, unsigned int base)
 {
 	if (p.length() == 0)
 		return 0;
 	const char *c = p.c_str();
-	switch (_base)
+	switch (base)
 	{
-	case ENTIER:
-		return atoi(c);
-		break; // Conversion token en valeur integer et sauvegarde
 	case HEXA:
 		return HexaToDecimal(c); // Conversion token en valeur hexadecimale et sauvegarde
 		break;
-	case FLOTTANT:
+	case DECIMAL:
 		return atof(c); // Conversion token en valeur hexadecimale et sauvegarde
 		break;
 	default:

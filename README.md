@@ -8,10 +8,12 @@ La librairie fonctionne avec tout objet qui implémente la classe [Stream](https
 
 ### 2.0.0:
 - Refonte du code au complet. On laisse tomber la mise en buffer des arguments, on stocke tout le message reçu dans un String et on décode les arguments seulement sur demande;
+- Ajouter des méthodes refresh() pour consommer le stream et renommage de isAvailable();
 - Ajout des méthodes getCommandString() et getArgString() pour permettre d'utiliser tout le texte tel quel de chaque morceau du message;
+- getArg(index,base) a un second paramètre optionnel pour préciser la base pour la conversion (DECIMAL ou HEXA);
 - Ajout de la méthode getMessage() pour relire le message trimé reçu;
 - Ajout du paramètre "finDeMessage" pour modifier le caractère qui délimite la fin du message;
-- Ajout des getters et setters pour les parametres "séparateur", "finDeMessage" et "base".
+- Ajout des getters et setters pour les parametres "séparateur", "finDeMessage".
 
 ### 1.1.2 :
 - Changé l'URL du projet pour pointer sur GitHub.
@@ -65,8 +67,8 @@ void setup()
 
 void loop()
 {
-
-  if (monDecodeur.available()) // Si un message est disponible
+  monDecodeur.refresh();      //Pour consommer le Stream dans l'objet Décodeur.
+  if (monDecodeur.isAvailable()) // Si un message est disponible
   {
 
    char command = monDecodeur.getCommand();   //Obtenir le premier caractère de commande décodé
@@ -94,8 +96,8 @@ void setup()
 
 void loop()
 {
-
-  if (monDecodeur.available()) // Si du texte est disponible
+  monDecodeur.refresh();      //Pour consommer le Stream dans l'objet Décodeur.
+  if (monDecodeur.isAailable()) // Si du texte est disponible
   {
 
    String command = monDecodeur.getCommandString();   //Obtenir le mot de commande décodé
@@ -115,11 +117,10 @@ void loop()
 Decodeur(Stream *stream)
 Decodeur(Stream *stream,char separateur)
 Decodeur(Stream *stream,char separateur, char finDeMessage)
-Decodeur(Stream *stream,char separateur, char finDeMessage, int base)
 ```
 On spécifie l'objet qui implémente la classe [Stream](https://www.arduino.cc/reference/en/language/functions/communication/stream/) (dans Arduino on retrouve les objets suivants: Serial, Ethernet, Wire, SD). On doit fournir l'addresse de l'objet, en ajoutant le caractère '&' devant celui-ci (voir section Utilisation).
 
-On spécifie facultativement le caractère servant à séparer la commande et les arguments (par défaut, l'espace ' '), le caractère servant à signifier la fin du message (par défaut '\n') ainsi que la base attendu des arguments (mots définis ENTIER, HEXA ou FLOTTANT).
+On spécifie facultativement le caractère servant à séparer la commande et les arguments (par défaut, l'espace ' ') ainsi que le caractère servant à signifier la fin du message (par défaut '\n').
 
 ## Méthodes disponibles
 
@@ -150,9 +151,9 @@ Permet de lire le nombre d'arguments décodés.
 
 ```cpp
 float getArg(int index)
+float getArg(int index, unsigned int base)
 ```
-Permet de lire l'argument d'index donné. Retourne 0 en cas d'indice non valide, ou si l'argument n'a pas été correctement décodé.
-La variable retournée est de type float, on peut le réduire à un entier par 'casting explicite'.
+Permet de lire l'argument d'index donné. Retourne 0 en cas d'indice non valide, ou si l'argument n'a pas été correctement décodé. Permet de préciser optionnellemnent la base de l'argument (par défaut en base 10). On peut utiliser le mot HEXA ou la valeur 16 si les arguments sont écrits en hexadécimal.
 
 ---
 
@@ -176,10 +177,3 @@ void setFinDeMessage(char value);
 char getFinDeMessage();
 ```
 Permet de lire et écrire le caractère marquant la fin du message.
-
----
-```cpp
-void setBase(int value);
-int getBase();
-```
-Permet de lire et écrire le type de base numérique attendu pour les arguments (ENTIER, FLOTTANT ou HEXA).

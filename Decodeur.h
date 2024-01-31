@@ -6,9 +6,10 @@
 
 /***********************/
 // Definition des formats
-#define ENTIER 0
-#define HEXA 1
-#define FLOTTANT 2
+#define BINAIRE 2
+#define DECIMAL 10
+#define HEXA 16
+
 
 /******************************************************************************
  * Definitions
@@ -17,26 +18,26 @@ class Decodeur
 {
 
 public:
-	Decodeur(Stream *stream, char separateur = ' ', char finDeMessage = '\n', int base = FLOTTANT);
+	Decodeur(Stream *stream, char separateur = ' ', char finDeMessage = '\n');
+
 	void setSeparateur(char);
 	char getSeparateur();
 	void setFinDeMessage(char);
 	char getFinDeMessage();
-	void setBase(int);
-	int getBase();
 
-	bool available();
+	bool refresh();
+	bool isAvailable();
 	int getArgCount();
 	char getCommand();
 	String getCommandString();
-	float getArg(int);
+	float getArg(int, unsigned int base=DECIMAL);
 	String getArgString(int);
 	String getMessage();
 
 private:
-	bool lireBuffer();
+	void lireBuffer();
 	void updateArgCount();
-	float convertirArg(String p);
+	float convertirArg(String p,unsigned int base);
 	int HexaToDecimal(const char *Hexa);
 	String _message;	// Buffer pour emmagasiner le dernier message reçu
 	int _NbArg;			// Variable pour le nombre d'arguments contenu dans le message
