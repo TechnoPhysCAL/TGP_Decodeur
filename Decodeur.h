@@ -4,11 +4,6 @@
 
 #include "Stream.h"
 
-/***********************/
-// Definition des formats
-#define BINAIRE 2
-#define DECIMAL 10
-#define HEXA 16
 
 
 /******************************************************************************
@@ -30,7 +25,7 @@ public:
 	int getArgCount();
 	char getCommand();
 	String getCommandString();
-	float getArg(int, unsigned int base=DECIMAL);
+	float getArg(int, unsigned int base=10);
 	String getArgString(int);
 	String getMessage();
 
