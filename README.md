@@ -1,6 +1,6 @@
 # Librairie TGP Decodeur
 
-Permet de décoder les messages selon le format 'C a1 a2 a3 ...' où C est une lettre ou un mot représentant une commande donnée, suivie d'une liste d'arguments de taille et de type variable. La fin de la ligne doit se terminer par le caractère '\n'.
+Permet de décoder les messages selon le format 'C a1 a2 a3 ...' où C est une lettre ou un mot représentant une commande donnée, suivie d'une liste d'arguments de taille et de type variable.
 
 La librairie fonctionne avec tout objet qui implémente la classe [Stream](https://www.arduino.cc/reference/en/language/functions/communication/stream/); l'objet fournira le texte brut qui sera décodé.
 
@@ -10,7 +10,7 @@ La librairie fonctionne avec tout objet qui implémente la classe [Stream](https
 - Refonte du code au complet. On laisse tomber la mise en buffer des arguments, on stocke tout le message reçu dans un String et on décode les arguments seulement sur demande;
 - Ajouter des méthodes refresh() pour consommer le stream et renommage de isAvailable();
 - Ajout des méthodes getCommandString() et getArgString() pour permettre d'utiliser tout le texte tel quel de chaque morceau du message;
-- getArg(index,base) a un second paramètre optionnel pour préciser la base pour la conversion (DECIMAL ou HEXA);
+- getArg(index,base) a un second paramètre optionnel pour préciser la base pour la conversion (bases supportées de 2 à 36);
 - Ajout de la méthode getMessage() pour relire le message trimé reçu;
 - Ajout du paramètre "finDeMessage" pour modifier le caractère qui délimite la fin du message;
 - Ajout des getters et setters pour les parametres "séparateur", "finDeMessage".
@@ -32,7 +32,7 @@ La librairie fonctionne avec tout objet qui implémente la classe [Stream](https
 
 ## Utilisation
 
-On utilise cette librairie pour implémenter un mode de message simplifié du type "commande arg0 arg1 arg2 ...", où "commande"" est généralement un seul caractère et les arguments sont habituellement numériques, et peuvent se suivre sans limite théorique.
+On utilise cette librairie pour implémenter un mode de message simplifié du type "commande arg0 arg1 arg2 ...", où "commande"" est un seul caractère ou un mot entier, et les arguments sont habituellement numériques, et peuvent se suivre sans limite théorique.
 
 Voici des exemples de messages qui pourrait être utilisée:
 ```cpp
@@ -45,6 +45,12 @@ La librairie permet également de supporter des commandes ou des arguments sous 
 "tourner 45"
 "set version 2"
 ```
+
+La librairie permet également de supporter des arguments écrits dans des bases autres, tel qu'en binaire ou en hexadécimal. Voici des exemples :
+"set ff"
+"Changer valeur 10111010"
+```
+
 ### Considérations
 
 - Avant le début du décodage du message, la fonction trim() est appliquée sur le texte reçu, ce qui aura pour effet de retirer tout espace blanc avant et après le message. On tentera également de retirer du message le caractère invisible \0.
@@ -159,7 +165,7 @@ Permet de lire le nombre d'arguments décodé.
 float getArg(int index)
 float getArg(int index, unsigned int base)
 ```
-Permet de lire l'argument d'index donné. Retourne 0 en cas d'indice non valide, ou si l'argument n'a pas été correctement décodé. Permet de préciser optionnellemnent la base de l'argument (par défaut en base 10). On peut utiliser le mot HEXA ou la valeur 16 si les arguments sont écrits en hexadécimal.
+Permet de lire l'argument d'index donné. Retourne 0 en cas d'indice non valide, ou si l'argument n'a pas été correctement décodé. Permet de préciser optionnellemnent la base dans laquelle l'argument a été écrit, entre 2 et 36 (par défaut en base 10). On utilise fréquemment la base binaire 2 (ou mot-clé BIN avec Arduino) ou la base hexadécimale 16 (ou mot-clé HEX).
 
 ---
 

@@ -180,47 +180,18 @@ void Decodeur::updateArgCount()
 
 float Decodeur::convertirArg(String p, unsigned int base)
 {
-	if (p.length() == 0)
+	if (p.length() == 0 || base < 2 || base > 36)
+	{
 		return 0;
+	}
 	const char *c = p.c_str();
+	 char * endPtr ;
 	switch (base)
 	{
-	case HEXA:
-		return HexaToDecimal(c); // Conversion token en valeur hexadecimale et sauvegarde
-		break;
-	case DECIMAL:
-		return atof(c); // Conversion token en valeur hexadecimale et sauvegarde
+	case 10:
+		return atof(c); // Conversion en base 10 avec décimales
 		break;
 	default:
-		return 0;
+		return (float)strtol(c, &endPtr, base); // Conversion en valeur d'une autre base, sans décimale
 	}
-}
-
-/*********************************************************
-// Fonction pour convertir une chaîne de caractères
-// exprimée en valeur hexadécimale en sa valeur décimale
-// correspondante.
-//********************************************************/
-int Decodeur::HexaToDecimal(const char *Hexa)
-{
-	int ret = 0, t = 0, n = 0;
-	const char *c = Hexa;
-	while (*c && (n < 16))
-	{
-		if ((*c >= '0') && (*c <= '9'))
-			t = (*c - '0');
-		else if ((*c >= 'A') && (*c <= 'F'))
-			t = (*c - 'A' + 10);
-		else if ((*c >= 'a') && (*c <= 'f'))
-			t = (*c - 'a' + 10);
-		else
-			break;
-		n++;
-		ret *= 16;
-		ret += t;
-		c++;
-		if (n >= 8)
-			break;
-	}
-	return ret;
 }
