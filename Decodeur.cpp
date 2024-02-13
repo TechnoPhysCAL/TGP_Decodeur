@@ -1,85 +1,51 @@
 /****************************************************************
-// Librairie Decodeur
-//Auteurs : Claude Bouchard / Jude Levasseur
-//Date : nov 2021
-//version : 1.1.1
+// Librairie TGP Decodeur
+//Auteur : Claude Bouchard
+//Date : janvier 2024
+//version : 2.0.0
 //Description: Permet de lire et décoder des commandes et des
-//arguments dans un format simplifié
+//arguments provenant d'un objet de type Stream, dans un format simplifié tel que
+// "{commande} {argNum0} {argNum1} ...",
 //***************************************************************/
 #include "Stream.h"
 #include "Decodeur.h"
 
 /***************************************************************
-// Déclaration des variables et constantes privées
+// Déclaration des variables et constantes publiques
 //***************************************************************/
-char _IncomingByte;						 //Variable pour la lecture du buffer du UART
-char _InComBuffer[_maxComLine + 1] = {}; //Buffer pour emmagasiner les entrées du UART
-char _Commande;							 //Variable pour conserver la commande, seulement le premier caractère n'est considéré
-int _InComIndex;						 //Index pour ajouter les nouveaux caractères entrants au Buffer
-float _Arguments[_maxArg];				 //Vecteur pour les arguments suivants la commande
-int _NbArg;								 //Variable pour le nombre d'argument
-char _separateur[2];					 //Séparateur par défaut est une espace
-int _base;								 //Variable pour contenir la base
-
-char _CommandeStr[_maxCommandeStr + 1] = {}; //Variable string pour commande de type string
-Stream *_MyStream;							 //Pointeur pour permettre de sélectionner le type de communication
 
 /***************************************************************
 // Constructeur
 //***************************************************************/
-Decodeur::Decodeur(Stream *stream)
+Decodeur::Decodeur(Stream *stream, char separateur, char finDeMessage)
 {
-	_IncomingByte = 0;
 	_MyStream = stream;
-	_InComIndex = 0;
+	_separateur = separateur;
+
+	_finDeMessage = finDeMessage;
+	_message = "";
 	_NbArg = 0;
-	_separateur[0] = ' ';
-	_base = ENTIER;
 }
-Decodeur::Decodeur(Stream *stream, char separateur, int base)
-{
-	_IncomingByte = 0;
-	_MyStream = stream;
-	_InComIndex = 0;
-	_NbArg = 0;
-	_separateur[0] = separateur;
-	_base = base;
-}
-/***************************************************************************************
-//Méthodes publiques
-//***************************************************************************************/
-bool Decodeur::estDisponible() { return available(); }			  //Temporaire pour transition.
-int Decodeur::nombreArgument() { return getArgCount(); }		  //Temporaire pour transition.
-char Decodeur::lireCommande() { return getCommand(); }			  //Temporaire pour transition.
-float Decodeur::lireArgument(int noArg) { return getArg(noArg); } //Temporaire pour transition.
 
 /****************************************************************
-Fonction pour initialiser le décodage du Stream de données.
-Permet de configurer aussi le type de séparateur entre chaque
-arguments ainsi que la base. La base doit être:
-
-Même fonction que ci-dessus, mais qui fonctionne avec les cartes Arduino qui possède
-uniquement le port série Serial0. Donc, il n'y a pas de paramètre selection.
+Fonction pour consommer le stream et mettre à jour les informations du décodeur.
 ****************************************************************/
+bool Decodeur::refresh()
+{
+	lireBuffer();
+	return isAvailable();
+}
 
 /****************************************************************
 Fonction pour indiquer si une commande à été reçue.
 ****************************************************************/
-bool Decodeur::available()
+bool Decodeur::isAvailable()
 {
-	if (lireBuffer())
-	{
-		decoderCommande();
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return _message.length() > 0;
 }
 
 /****************************************************************
-Fonction pour indiquer le nombre d'arguments reçues.
+Fonction pour indiquer le nombre d'arguments reçu.
 ****************************************************************/
 int Decodeur::getArgCount()
 {
@@ -87,26 +53,87 @@ int Decodeur::getArgCount()
 }
 
 /****************************************************************
-Fonction pour retourner la commande reçue.
+Fonction pour retourner la commande reçue, seulement le premier caractère.
 ****************************************************************/
 char Decodeur::getCommand()
 {
-	return _Commande;
+	return _message.length() == 0 ? 0 : _message.charAt(0);
 }
 
 /****************************************************************
-Fonction pour retourner l'argument sélectionnée
+Fonction pour retourner la commande reçue, tout le mot complet en String.
 ****************************************************************/
-float Decodeur::getArg(int noArg)
+String Decodeur::getCommandString()
 {
-	if ((noArg < 0) || (noArg) > _maxArg)
+	return _message.length() == 0 ? "" : _message.substring(0, _message.indexOf(_separateur, 1));
+}
+
+/****************************************************************
+Fonction pour retourner l'argument sélectionné
+****************************************************************/
+float Decodeur::getArg(int noArg, unsigned int base)
+{
+	return convertirArg(getArgString(noArg), base);
+}
+
+/****************************************************************
+Fonction pour retourner l'argument sélectionné sous forme textuel String
+****************************************************************/
+String Decodeur::getArgString(int noArg)
+{
+	int compteur = noArg + 1;
+	if (_message.length() == 0)
 	{
-		return 0;
+		return "";
+	}
+	int decalage = 0;
+	while (compteur > 0 && decalage >= 0)
+	{
+		decalage = _message.indexOf(_separateur, decalage + 1);
+		compteur--;
+	}
+	int nextDecalage = _message.indexOf(_separateur, decalage + 1);
+
+	if (decalage > 0)
+	{
+		if (nextDecalage > decalage)
+		{
+			return _message.substring(decalage + 1, nextDecalage);
+		}
+		else
+		{
+			return _message.substring(decalage + 1);
+		}
 	}
 	else
 	{
-		return _Arguments[noArg];
+		return "";
 	}
+}
+
+/****************************************************************
+Fonction pour obtenir le message original entier trimmé.
+****************************************************************/
+String Decodeur::getMessage()
+{
+	return _message;
+}
+
+void Decodeur::setSeparateur(char value)
+{
+	_separateur = value;
+}
+char Decodeur::getSeparateur()
+{
+	return _separateur;
+}
+void Decodeur::setFinDeMessage(char value)
+{
+	_finDeMessage = value;
+}
+char Decodeur::getFinDeMessage()
+{
+	return _finDeMessage;
 }
 
 /***************************************************************************************
@@ -114,110 +141,55 @@ float Decodeur::getArg(int noArg)
 //**************************************************************************************/
 
 /*********************************************************
-//Routine pour décoder les tokens de la commande
+//Routine pour stocker le dernier message reçu et mettre à jour les variables nécessaires.
 //********************************************************/
 
-bool Decodeur::lireBuffer()
+void Decodeur::lireBuffer()
 {
-	_IncomingByte = -1;
-	while ((_MyStream->available() > 0) && (_IncomingByte != '\n'))
+	if (_MyStream->available())
 	{
-
-		if (_InComIndex >= _maxComLine)
-		{					 //Pour éviter le débordement,
-			_InComIndex = 0; //on flush le buffer si trop de caractères reçus
-			_InComBuffer[_InComIndex] = '\0';
-		}
-		// Lecture du byte reçu et ajout au Buffer de reception
-		_IncomingByte = _MyStream->read();
-		_InComBuffer[_InComIndex] = _IncomingByte; //Ajoute le byte reçu dans dans le buffer
-		++_InComIndex;
-		_InComBuffer[_InComIndex] = '\0'; //Déplace le caractère de fin de chaine
-	}
-	if (_IncomingByte == '\n' || _IncomingByte == '\r')
-	{
-		if (_InComIndex < 2)
-		{					 //Correction pour une réception avec \n seulement
-			_InComIndex = 0; //on flush le buffer si seulement \n
-			_InComBuffer[_InComIndex] = '\0';
-			return false;
-		}
-		else
-		{
-			return true;
-		}
+		_message = _MyStream->readStringUntil(_finDeMessage);
+		_message.trim();
+		_message.replace("\0", "");
 	}
 	else
 	{
-		return false;
+		_message = "";
 	}
-}
-
-bool Decodeur::decoderCommande()
-{
-	SplitToken(_InComBuffer, &_Commande, _Arguments, _base); //on appelle la fonction pour splitter les tokens (entier)
-
-	_InComIndex = 0;				  //On flush le buffer,
-	_InComBuffer[_InComIndex] = '\0'; //en inscrivant le caratère de fin de chaine à son début.
-
-	return true; //On retrourne "vrai" si une commande complete reçue
+	updateArgCount();
 }
 
 /*********************************************************
-// Fonction pour séparer les tokens
+//Routine pour compter le nombre d'arguments disponibles dans le message
 //********************************************************/
-void Decodeur::SplitToken(char Buf[], char *Comm, float Arg[], int base)
+void Decodeur::updateArgCount()
 {
 	_NbArg = 0;
-	char *p; // Pointeur pour la valeur de retour de la fonction "strtok"
-	int i;
-	//char separators[] = " \t.,!?\n\r";  		//Liste des séparateurs valides
 
-	//Correction pour séparateurs; effectuée à la version 1.4
+	int decalage = _message.indexOf(_separateur, 1);
 
-	//char separators[2];
-	//strcpy(separators, _separateur);
-
-	char separators[4];
-	strcpy(separators, _separateur);
-	strcat(separators, "\n\r"); //Ajout de CR et LF comme délimiteurs par défaut. Permet de régler le nombre d'argument = 1 lorsque la commande est seule.
-								//FIN Correction pour séparateurs; effectuée à la version 1.4
-
-	p = strtok(Buf, separators); //Premier appel de strtok() pour isoler le 1er token, soit la commande
-	*Comm = p[0];				 //Enregistre la commande d'un seul charactère (pour conserver la compatibilité)
-
-	//Ajout commande chaine pour version 1.4
-	strncpy(_CommandeStr, p, _maxCommandeStr); //Enregistre la commande sous frome de chaine; limité à la longueur maximale "_maxCommandeStr"
-	//FIN Ajout commande chaine pour version 1.4
-
-	i = 0;
-	while (p != NULL && i < _maxArg) //Boucle pour isoler les tokens arguments suivants la commande
+	while (decalage > 0)
 	{
-		p = strtok(NULL, separators); //Appels successifs de strtok isolant les tokens
-		if (p != NULL)
-		{
-			Arg[i++] = convertirArg(p, base);
-		}
+		decalage = _message.indexOf(_separateur, decalage + 1);
+		_NbArg++;
 	}
-	_NbArg = i; //Enregistre le nombre de tokens arguments
 }
-
 /*********************************************************
-// Fonction pour convertir l'argument textuel en type float
+// Fonction pour convertir l'argument textuel en nombre, selon la base numérique prévue.
 //********************************************************/
 
-float Decodeur::convertirArg(char *p, int base)
+float Decodeur::convertirArg(String p, unsigned int base)
 {
+	if (p.length() == 0)
+		return 0;
+	const char *c = p.c_str();
 	switch (base)
 	{
-	case ENTIER:
-		return atoi(p);
-		break; //Conversion token en valeur integer et sauvegarde
 	case HEXA:
-		return HexaToDecimal(p); //Conversion token en valeur hexadecimale et sauvegarde
+		return HexaToDecimal(c); // Conversion token en valeur hexadecimale et sauvegarde
 		break;
-	case FLOTTANT:
-		return atof(p); //Conversion token en valeur hexadecimale et sauvegarde
+	case DECIMAL:
+		return atof(c); // Conversion token en valeur hexadecimale et sauvegarde
 		break;
 	default:
 		return 0;

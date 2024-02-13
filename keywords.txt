@@ -11,16 +11,21 @@ Decodeur	KEYWORD1
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
-
-available	KEYWORD2
+refresh	KEYWORD2
+isAvailable	KEYWORD2
 getArgCount	KEYWORD2
 getCommand	KEYWORD2
+getCommandString	KEYWORD2
 getArg	KEYWORD2
+getArgString	KEYWORD2
+getMessage	KEYWORD2
+getSeparateur	KEYWORD2
+setSeparateur	KEYWORD2
+getFinDeMessage	KEYWORD2
+setFinDeMessage	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
 #######################################
-FLOTTANT	LITERAL1
 HEXA	LITERAL1
-ENTIER	LITERAL1
-TEXTE	LITERAL1
+DECIMAL	LITERAL1

@@ -4,40 +4,47 @@
 
 #include "Stream.h"
 
-#define _maxComLine 200	   //Nombre maximal de caractères reçue pour une commande complète. Ex: w 1 2 3 4 5 => 11 caractères
-#define _maxArg 10		   //Nombre maximal d'arguments à recevoir suivant la commande
-#define _maxCommandeStr 15 //Longueur maximale d'une commande de type string
 /***********************/
-//Definition des formats
-#define ENTIER 0
-#define HEXA 1
-#define FLOTTANT 2
-#define TEXTE 3
+// Definition des formats
+#define BINAIRE 2
+#define DECIMAL 10
+#define HEXA 16
+
 
 /******************************************************************************
-* Definitions
-******************************************************************************/
+ * Definitions
+ ******************************************************************************/
 class Decodeur
 {
 
 public:
-	Decodeur(Stream *stream);
-	Decodeur(Stream *stream, char separateur, int format);
-	bool available();
-	bool estDisponible(); //Temporaire pour transition.
+	Decodeur(Stream *stream, char separateur = ' ', char finDeMessage = '\n');
+
+	void setSeparateur(char);
+	char getSeparateur();
+	void setFinDeMessage(char);
+	char getFinDeMessage();
+
+	bool refresh();
+	bool isAvailable();
 	int getArgCount();
-	int nombreArgument(); //Temporaire pour transition.
 	char getCommand();
-	char lireCommande(); //Temporaire pour transition.
-	float getArg(int);
-	float lireArgument(int); //Temporaire pour transition.
+	String getCommandString();
+	float getArg(int, unsigned int base=DECIMAL);
+	String getArgString(int);
+	String getMessage();
 
 private:
-	bool lireBuffer();
-	bool decoderCommande();
-	float convertirArg(char *p, int base);
+	void lireBuffer();
+	void updateArgCount();
+	float convertirArg(String p,unsigned int base);
 	int HexaToDecimal(const char *Hexa);
-	void SplitToken(char Buf[], char *Comm, float Arg[], int base);
+	String _message;	// Buffer pour emmagasiner le dernier message reçu
+	int _NbArg;			// Variable pour le nombre d'arguments contenu dans le message
+	char _separateur;	// Caractère de séparation dans le message
+	char _finDeMessage; // Caractère de fin attendu dans le message
+	int _base;			// Variable pour contenir la base numérique (Entier, flottant ou hexadécimal)
+	Stream *_MyStream;	// Pointeur pour permettre de sélectionner l'objet de communication Stream
 };
 
 #endif
