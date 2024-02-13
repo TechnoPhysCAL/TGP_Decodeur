@@ -47,6 +47,7 @@ La librairie permet également de supporter des commandes ou des arguments sous 
 ```
 
 La librairie permet également de supporter des arguments écrits dans des bases autres, tel qu'en binaire ou en hexadécimal. Voici des exemples :
+```cpp
 "set ff"
 "Changer valeur 10111010"
 ```
