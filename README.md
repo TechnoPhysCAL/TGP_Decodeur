@@ -97,7 +97,7 @@ void setup()
 void loop()
 {
   monDecodeur.refresh();      //Pour consommer le Stream dans l'objet Décodeur.
-  if (monDecodeur.isAailable()) // Si du texte est disponible
+  if (monDecodeur.isAvailable()) // Si du texte est disponible
   {
 
    String command = monDecodeur.getCommandString();   //Obtenir le mot de commande décodé
