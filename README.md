@@ -76,7 +76,7 @@ void loop()
     
   for (int no = 0; no < argCount; no++) //Pour chaque argument
     {
-      float arg = monDecodeur.getArg(no)); //Obtenir l'argument d'indice 'no'
+      float arg = monDecodeur.getArg(no); //Obtenir l'argument d'indice 'no'
     }
   }
 }
@@ -105,7 +105,7 @@ void loop()
     
   for (int no = 0; no < argCount; no++) //Pour chaque argument
     {
-      String arg = monDecodeur.getArgString(no)); //Obtenir l'argument d'indice 'no' sous forme de texte
+      String arg = monDecodeur.getArgString(no); //Obtenir l'argument d'indice 'no' sous forme de texte
     }
   }
 }
