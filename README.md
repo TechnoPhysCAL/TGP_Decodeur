@@ -151,7 +151,7 @@ Permet de lire tout le mot de commande décodé.
 ```cpp
 int getArgCount()
 ```
-Permet de lire le nombre d'arguments décodés.
+Permet de lire le nombre d'arguments décodé.
 
 ---
 
